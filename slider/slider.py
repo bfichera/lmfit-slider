@@ -3,12 +3,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def slider(fcn, params, x=None, args=None, kws=None, data=None, **kwargs):
+def slider(fcn, params, x=None, args=None, kws=None, data=None, model_kwargs=None, data_kwargs=None):
     # The parametrized function to be plotted
     if args is None:
         args = {}
     if kws is None:
         kws = {}
+    if model_kwargs is None:
+        model_kwargs = {}
+    if data_kwargs is None:
+        data_kwargs = {}
     params = params.copy()
     for name in params:
         if np.isinf(params[name].min) or np.isinf(params[name].max):
@@ -21,9 +25,9 @@ def slider(fcn, params, x=None, args=None, kws=None, data=None, **kwargs):
 
     # Create the figure and the line that we will manipulate
     fig, ax = plt.subplots()
-    line, = ax.plot(xdata, model, **kwargs)
+    line, = ax.plot(xdata, model, **model_kwargs)
     if data is not None:
-        line2, = ax.plot(xdata, data, kwargs)
+        line2, = ax.plot(xdata, data, **data_kwargs)
 
     num_vary_params = 0
     for param in params.values():
