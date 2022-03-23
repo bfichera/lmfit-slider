@@ -11,7 +11,7 @@ import lmfit
 import matplotlib.pyplot as plt
 import numpy as np
 
-from slider import slider
+from lmfit_slider import slider
 
 
 def fcn(params, x):
