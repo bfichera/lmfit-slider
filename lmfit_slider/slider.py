@@ -3,7 +3,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def slider(fcn, params, x=None, args=None, kws=None, data=None, model_kwargs=None, data_kwargs=None):
+def slider(
+    fcn,
+    params,
+    x=None,
+    args=None,
+    kws=None,
+    data=None,
+    model_kwargs=None,
+    data_kwargs=None,
+):
     # The parametrized function to be plotted
     if args is None:
         args = {}
@@ -54,8 +63,6 @@ def slider(fcn, params, x=None, args=None, kws=None, data=None, model_kwargs=Non
     # The function to be called anytime a slider's value changes
     init_min = min(model)
     init_max = max(model)
-    current_min = init_min
-    current_max = init_max
 
     def update(val):
         for param_name in param_sliders.keys():
@@ -81,13 +88,23 @@ def slider(fcn, params, x=None, args=None, kws=None, data=None, model_kwargs=Non
         slider.on_changed(update)
 
     resetax = plt.axes([0.8, 0.025, 0.1, 0.04])
+    axresetax = plt.axes([0.6, 0.025, 0.1, 0.04])
     button = Button(resetax, 'Reset', hovercolor='0.975')
+    button2 = Button(axresetax, 'Reset Axes', hovercolor='0.975')
 
     def reset(event):
         for slider in param_sliders.values():
             slider.reset()
         ax.set_ylim(bottom=init_min, top=init_max)
+
+    def reset_axes(event):
+        model = fcn(params, *args, **kws)
+        if data is not None:
+            ax.set_ylim(bottom=min(min(model), min(data)), top=max(max(model), max(data)))
+        else:
+            ax.set_ylim(bottom=min(model), top=max(model))
     button.on_clicked(reset)
+    button2.on_clicked(reset_axes)
 
     plt.show()
     return params
