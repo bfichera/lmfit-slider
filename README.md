@@ -19,10 +19,13 @@ def fcn(params, x):
 
 
 params = lmfit.Parameters()
-params.add('k', value=0, min=-10, max=10)
+params.add('k', value=1, min=-10, max=10)
 
 x = np.linspace(0, 2*np.pi, 100)
+y = np.sin(4*x)
 
 
-slider(fcn, params, x=x, args=(x,))
+new_params = slider(fcn, params, x=x, data=y, args=(x,))
+
+new_params.pretty_print()
 ```
