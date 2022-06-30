@@ -39,7 +39,7 @@ def slider(
     x_data_fine = np.linspace(np.amin(xdata), np.amax(xdata), 5000)
     model_data_fine = fcn(params,x_data_fine)
 
-    line, = ax.plot(xdata, model, **model_kwargs)
+    line, = ax.plot(x_data_fine, model_data_fine, **model_kwargs)
     if data is not None:
         line2, = ax.plot(xdata, data, **data_kwargs)
 
