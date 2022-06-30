@@ -26,7 +26,6 @@ def slider(
     for name in params:
         if np.isinf(params[name].min) or np.isinf(params[name].max):
             raise ValueError('Params must have finite bounds.')
-    model = fcn(params, *args, **kws)
     if x is None:
         xdata = np.arange(0, len(model))
     else:
@@ -37,9 +36,9 @@ def slider(
     
     #creates finer spaced x-data so that you can clearly see in-between the points you are interpolating
     x_data_fine = np.linspace(np.amin(xdata), np.amax(xdata), 5000)
-    model_data_fine = fcn(params,x_data_fine)
+    model = fcn(params,x_data_fine *args, **kws)
 
-    line, = ax.plot(x_data_fine, model_data_fine, **model_kwargs)
+    line, = ax.plot(x_data_fine, model, **model_kwargs)
     if data is not None:
         line2, = ax.plot(xdata, data, **data_kwargs)
 
@@ -103,7 +102,7 @@ def slider(
         ax.set_ylim(bottom=init_min, top=init_max)
 
     def reset_axes(event):
-        model = fcn(params, *args, **kws)
+        model = fcn(params, x_data_fine, *args, **kws)
         if data is not None:
             ax.set_ylim(bottom=min(min(model), min(data)), top=max(max(model), max(data)))
         else:
