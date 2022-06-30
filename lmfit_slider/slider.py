@@ -36,7 +36,7 @@ def slider(
     fig, ax = plt.subplots()
     
     #creates finer spaced x-data so that you can clearly see in-between the points you are interpolating
-    self.x_data_fine = np.linspace(np.amin(xdata), np.amax(xdata), 5000)
+    x_data_fine = np.linspace(np.amin(xdata), np.amax(xdata), 5000)
     model_data_fine = fcn(params,x_data_fine)
 
     line, = ax.plot(x_data_fine, model_data_fine, **model_kwargs)
@@ -73,7 +73,7 @@ def slider(
         for param_name in param_sliders.keys():
             if params[param_name].vary:
                 params[param_name].set(value=param_sliders[param_name].val)
-        model = fcn(params, self.x_data_fine, *args, **kws)
+        model = fcn(params, x_data_fine, *args, **kws)
         old_bottom, old_top = ax.get_ylim()
         line.set_ydata(
             model,
