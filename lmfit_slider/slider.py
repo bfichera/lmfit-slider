@@ -34,6 +34,11 @@ def slider(
 
     # Create the figure and the line that we will manipulate
     fig, ax = plt.subplots()
+    
+    #creates finer spaced x-data so that you can clearly see in-between the points you are interpolating
+    x_data_fine = np.linspace(np.amin(xdata), np.amax(xdata), 5000)
+    model_data_fine = fcn(params, x = x_data_fine)
+
     line, = ax.plot(xdata, model, **model_kwargs)
     if data is not None:
         line2, = ax.plot(xdata, data, **data_kwargs)
