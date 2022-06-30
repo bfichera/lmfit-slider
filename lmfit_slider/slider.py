@@ -36,7 +36,7 @@ def slider(
     
     #creates finer spaced x-data so that you can clearly see in-between the points you are interpolating
     x_data_fine = np.linspace(np.amin(xdata), np.amax(xdata), 5000)
-    model = fcn(params,x_data_fine *args, **kws)
+    model = fcn(params,x_data_fine, *args, **kws)
 
     line, = ax.plot(x_data_fine, model, **model_kwargs)
     if data is not None:
