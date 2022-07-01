@@ -12,7 +12,8 @@ def slider(
     data=None,
     model_kwargs=None,
     data_kwargs=None,
-    model_fine = False
+    model_fine = False,
+    model_x = None
 ):
     # The parametrized function to be plotted
     if args is None:
@@ -37,13 +38,14 @@ def slider(
     
     #creates finer spaced x-data so that you can clearly see in-between the points you are interpolating
     if model_fine:
-        x_data_fine = np.linspace(np.amin(xdata), np.amax(xdata), 5000)
-        model = fcn(params, x_data_fine,*args, **kws)
+        if model_x == None:
+            model_x = np.linspace(np.amin(xdata), np.amax(xdata), 5000)
+        model = fcn(params, model_x,*args, **kws)
     else:
-        x_data_fine = x
+        model_x = x
         model = fcn(params, *args, **kws)
 
-    line, = ax.plot(x_data_fine, model, **model_kwargs)
+    line, = ax.plot(model_x, model, **model_kwargs)
     if data is not None:
         line2, = ax.plot(xdata, data, **data_kwargs)
 
@@ -78,7 +80,7 @@ def slider(
             if params[param_name].vary:
                 params[param_name].set(value=param_sliders[param_name].val)
         if model_fine:
-            model = fcn(params, x_data_fine, *args, **kws)
+            model = fcn(params, model_x, *args, **kws)
         else:
             model = fcn(params, *args, **kws)
         old_bottom, old_top = ax.get_ylim()
@@ -111,7 +113,7 @@ def slider(
 
     def reset_axes(event):
         if model_fine:
-            model = fcn(params, x_data_fine, *args, **kws)
+            model = fcn(params, model_x, *args, **kws)
         else:
             model = fcn(params, *args, **kws)
         if data is not None:
