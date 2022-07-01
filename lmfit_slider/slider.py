@@ -1,17 +1,38 @@
+import inspect
+from warnings import warn
+
 from matplotlib.widgets import Slider, Button
 import matplotlib.pyplot as plt
 import numpy as np
 
 
+def _check_args(fcn, args, kws):
+    req_args = len(inspect.signature(fcn).parameters)
+    prov_args = len(args) + len(kws)
+    if prov_args + 1 != req_args:
+        raise TypeError(
+            f'{req_args} arguments are required'
+            f' but {prov_args} were provided.'
+        )
+
+
+def _get_model_x(fcn, args, kws):
+    name = list(inspect.signature(fcn).parameters)[1]
+    if name in kws:
+        return kws[name]
+    return args[0]
+
+
 def slider(
     fcn,
     params,
-    x=None,
+    data_x=None,
     args=None,
     kws=None,
     data=None,
     model_kwargs=None,
     data_kwargs=None,
+    x=None,
 ):
     # The parametrized function to be plotted
     if args is None:
@@ -22,6 +43,8 @@ def slider(
         model_kwargs = {}
     if data_kwargs is None:
         data_kwargs = {}
+    if x is not None:
+        warn('x keyword is deprecated, use data_x', DeprecationWarning)
     params = params.copy()
     for name in params:
         if np.isinf(params[name].min) or np.isinf(params[name].max):
