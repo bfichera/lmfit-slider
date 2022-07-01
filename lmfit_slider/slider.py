@@ -11,7 +11,7 @@ def _check_args(fcn, args, kws):
     prov_args = len(args) + len(kws)
     if prov_args + 1 != req_args:
         raise TypeError(
-            f'{req_args} arguments are required'
+            f'{req_args-1} extra arguments are required'
             f' but {prov_args} were provided.'
         )
 
@@ -50,17 +50,15 @@ def slider(
     for name in params:
         if np.isinf(params[name].min) or np.isinf(params[name].max):
             raise ValueError('Params must have finite bounds.')
-    model = fcn(params, *args, **kws)
-    if x is None:
-        xdata = np.arange(0, len(model))
-    else:
-        xdata = x.copy()
+    _check_args(fcn, args, kws)
 
     # Create the figure and the line that we will manipulate
     fig, ax = plt.subplots()
-    line, = ax.plot(xdata, model, **model_kwargs)
+    model_x = _get_model_x(fcn, args, kws)
+    model = fcn(params, *args, **kws)
+    line, = ax.plot(model_x, model, **model_kwargs)
     if data is not None:
-        line2, = ax.plot(xdata, data, **data_kwargs)
+        line2, = ax.plot(data_x, data, **data_kwargs)
 
     num_vary_params = 0
     for param in params.values():
@@ -124,7 +122,10 @@ def slider(
     def reset_axes(event):
         model = fcn(params, *args, **kws)
         if data is not None:
-            ax.set_ylim(bottom=min(min(model), min(data)), top=max(max(model), max(data)))
+            ax.set_ylim(
+                bottom=min(min(model), min(data)),
+                top=max(max(model), max(data)),
+            )
         else:
             ax.set_ylim(bottom=min(model), top=max(model))
     button.on_clicked(reset)
