@@ -30,7 +30,7 @@ new_params = slider(
     params,
     data_x=data_x,
     data=data,
-    args=(model_x, 1.5,),
+    args=(model_x, 1.5),
 )
 
 new_params.pretty_print()
