@@ -45,6 +45,7 @@ def slider(
         data_kwargs = {}
     if x is not None:
         warn('x keyword is deprecated, use data_x', FutureWarning)
+        data_x = x
     params = params.copy()
     for name in params:
         if np.isinf(params[name].min) or np.isinf(params[name].max):
