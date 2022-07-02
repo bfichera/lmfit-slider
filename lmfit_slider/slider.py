@@ -34,6 +34,30 @@ def slider(
     data_kwargs=None,
     x=None,
 ):
+    """Parameters
+    ----------
+    fcn : callable ``f(params, x, *args, **kws)``
+    params : lmfit.Parameters
+    data_x : numpy.ndarray
+        X data to plot
+    args : tuple
+        Passed to ``fcn`` for evaluation
+    kws : dict
+        Passed to ``fcn`` for evaluation
+    data : numpy.ndarray
+        Y data to plot
+    model_kwargs : dict
+        ``matplotlib`` arguments for plotting model
+    data_kwargs : dict
+        ``matplotlib`` arguments for plotting data
+    x : numpy.ndarray
+        Deprecated, use data_x instead
+
+    Returns
+    -------
+    new_params : lmfit.Parameters
+        The final settings of all the sliders
+    """
     # The parametrized function to be plotted
     if args is None:
         args = {}
