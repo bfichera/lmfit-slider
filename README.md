@@ -4,6 +4,9 @@
 - `matplotlib`
 - `numpy`
 
+### Installation
+```pip install lmfit-slider```
+
 ### Usage
 
 ```
