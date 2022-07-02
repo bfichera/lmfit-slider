@@ -5,6 +5,11 @@ from matplotlib.widgets import Slider, Button
 import matplotlib.pyplot as plt
 import numpy as np
 
+try:
+    import lmfit
+except ImportError:
+    warn('lmfit import failed; do you have lmfit installed?', Warning)
+
 
 def _check_args(fcn, args, kws):
     req_args = len(inspect.signature(fcn).parameters)
