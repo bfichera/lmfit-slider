@@ -5,6 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='lmfit-slider',
+    version='0.0.1',
     author='Bryan Fichera',
     author_email='bfichera@mit.edu',
     description='Make slider from lmfit model function and params',
