@@ -77,7 +77,10 @@ def slider(
         data_x = x
     params = params.copy()
     for name in params:
-        if np.isinf(params[name].min) or np.isinf(params[name].max):
+        if (
+            (np.isinf(params[name].min) or np.isinf(params[name].max))
+            and params[name].vary
+        ):
             raise ValueError('Params must have finite bounds.')
     _check_args(fcn, args, kws)
 
@@ -94,7 +97,7 @@ def slider(
         if param.vary:
             num_vary_params += 1
     # adjust the main plot to make room for the sliders
-    plt.subplots_adjust(left=0.25, bottom=0.1+0.04*num_vary_params)
+#     plt.subplots_adjust(left=0.25, bottom=0.1+0.04*num_vary_params)
 
     # Make a horizontal slider to control the params.
     param_sliders = {}
